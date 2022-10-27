@@ -1,0 +1,252 @@
+/* Color Crema de fondo */
+body {
+    background: rgb(255,44,44);
+    background: radial-gradient(circle, rgba(255,44,44,1) 0%, rgba(99,122,176,1) 50%, rgba(255,255,255,1) 100%);   
+}
+
+/* Color botón */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+    background-color: #3F5E98;
+}
+
+/* Búsqueda */
+#searchform.widget_search #s,
+#search #s {
+    width: 165px;
+    display: block;
+    float: left;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    border-radius: 10px 0 0 0;
+    -moz-border-radius: 10px 0 0 0;
+    -webkit-border-radius: 10px 0 0 0;
+    font-family: Arial !important;
+    font-size: 14px;
+}
+
+/* Tarjetitas */
+#galeria {
+    margin: 10px 20px;
+    box-shadow: 0 4px 8px 0 lightblue, 0 6px 20px 0 rgb(0, 0, 0, 0.19);
+    max-width: 350px;
+    border-radius: 5px;
+    background-color: #fff;
+    padding: 20px;
+}
+
+#galeria img {
+    width: 100%;
+    height: auto;
+}
+
+#galeria:hover {
+    border: 1px solid lightskyblue;
+    transform: rotate(-3deg);
+}
+
+#pie {
+    text-align: center;
+    padding: 10px;
+}
+
+/* Gráfico */
+:root {
+    --color_1: #3b5998;
+    --color_2: #00acce;
+    --color_3: #e95950;
+    --color_4: #c8232c;
+    --background-color: rgb(15, 27, 27);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container_grafico {
+    width: 700px;
+    height: 550px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.grafico {
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background-image: conic-gradient(var(--color_1) 40%,
+            var(--color_2) 40% 70%,
+            var(--color_3) 70% 88%,
+            var(--color_4) 88%);
+    box-shadow: 1px 1px 5px 1px rgb(70, 70, 70);
+}
+
+.leyenda_all {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+[class^="color_"] {
+    width: 15px;
+    height: 20px;
+    background-color: var(--color_1);
+    margin-right: 8px;
+    border-radius: 3px;
+}
+
+.color_2 {
+    background-color: var(--color_2);
+}
+
+.color_3 {
+    background-color: var(--color_3);
+}
+
+.color_4 {
+    background-color: var(--color_4);
+}
+
+/* Formulario Login */
+
+#col-login {
+    display: flex;
+    align-items: center;
+}
+
+.grupo {
+    position: relative;
+    margin-bottom: 45px;
+}
+
+.login {
+    font-size: 18px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    max-width: 250px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #0A1E35;
+    color: #fff;
+}
+
+.login:focus {
+    outline: none;
+}
+
+/* Labels */
+.etiqueta {
+    color: #fff;
+    font-size: 18px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+/* Activo */
+.login:focus~.etiqueta,
+.login:valid~.etiqueta {
+    top: -20px;
+    font-size: 14px;
+    color: #fff;
+}
+
+/* Barras inferiores */
+.bar {
+    position: relative;
+    display: block;
+    width: 228px;
+}
+
+.bar:before,
+.bar:after {
+    content: '';
+    height: 2px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #fff;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.bar:before {
+    left: 50%;
+}
+
+.bar:after {
+    right: 50%;
+}
+
+/* active state */
+.login:focus~.bar:before,
+.login:focus~.bar:after {
+    width: 50%;
+}
+
+/* Resaltar */
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* activo */
+.login:focus~.highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+/* Animaciones */
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #fff;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #fff;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #fff;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
