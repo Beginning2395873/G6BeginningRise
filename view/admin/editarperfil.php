@@ -29,11 +29,11 @@ if($t_doc=="C.C.") {
         <div class="col-md-12">
             <div class="p-3 py-2">
                 <!-- Datos Básicos -->
-                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <div class="d-flex flex-column align-items-center text-center pt-4 p-3 py-3">
                     <img class="rounded-circle" width="200px" height="200px" alt="Foto" src="<?php echo $arreglo['foto_perfil'] ?>">
                 </div>
                 <div class="justify-content-between mb-3">
-                    <h4 class="text-left fs-2 fw-bold">Editar Perfil</h4>
+                    <h4 class="text-left fs-2 fw-bold text-center">Editar Perfil</h4>
                 </div>
                 <p class="text-left">
                     Los campos marcados con<span class="ms-1" style="color: red;">(*)</span> son obligatorios.

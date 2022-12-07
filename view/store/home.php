@@ -50,10 +50,10 @@ $nformat = substr($format, 0, 3) . "." . substr($format, 3, 3) . "." . substr($f
                             Teléfono: <?php echo $result; ?>
                         </li>
                         <li class="mb-3 fs-5">
-                            Correo Electrónico: <?php echo $arreglo['email_tienda']; ?>
+                            Correo: <?php echo $arreglo['email_tienda']; ?>
                         </li>
                         <li class="mb-3 fs-5">
-                            Ciudad: Bogotá.
+                            Ciudad: Bogotá
                         </li>
                     </ul>
                 </div>
@@ -67,7 +67,7 @@ $nformat = substr($format, 0, 3) . "." . substr($format, 3, 3) . "." . substr($f
                         <i class="fa-solid fa-upload me-2"></i>
                         Subir Productos
                     </a>
-                    <a href="verproductos.php" class="btn btn-primary btn-lg">
+                    <a href="<?php echo urlsite ?>?page=tienda&opcion=listaProductos" class="btn btn-primary btn-lg">
                         <i class="fa-solid fa-list me-2"></i>
                         Ver/Editar Productos
                     </a>

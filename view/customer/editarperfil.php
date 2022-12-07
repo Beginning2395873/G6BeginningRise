@@ -31,7 +31,7 @@ if($t_doc=="C.C.") {
                     <img class="rounded-circle" width="200px" height="200px" alt="Foto" src="<?php echo $arreglo['foto_perfil'] ?>">
                 </div>
                 <div class="justify-content-between mb-3">
-                    <h4 class="text-left fs-2 fw-bold">Editar Perfil</h4>
+                    <h4 class="text-left fs-2 fw-bold text-center mb-4">Editar Perfil</h4>
                 </div>
                 <p class="text-left">
                     Los campos marcados con<span class="ms-1" style="color: red;">(*)</span> son obligatorios.
