@@ -16,6 +16,18 @@ class TiendaControlador
         require "view/store/añadirProducto.php";
     }
 
+    public function listaProductos(){
+        require "view/store/listaProductos.php";
+    }
+
+    public function modificarProducto(){
+        if($_POST)
+        {
+            $idProducto = $_POST['idProducto'];
+            require "view/store/editarProducto.php";
+        }
+    }
+
     public function tiendaRegistro()
     {
         // Instancia del modelo Tienda

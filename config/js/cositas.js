@@ -232,3 +232,79 @@ function eliminarAdmin() {
     
 }
 // Funciones Admin
+
+
+// Funciones Productos
+function alertaProductoDesactivar(){
+    const form = document.getElementById('toggleProducto')
+    form.addEventListener("submit", function (a) {
+        a.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success ms-2',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+    
+        swalWithBootstrapButtons.fire({
+            title: '¿Desea desactivar el Producto?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('toggleProducto').submit()
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'El Producto no fue desactivado',
+                    'error'
+                )
+            }
+        })
+    })
+}
+
+function alertaProductoActivar(){
+    const form = document.getElementById('toggleProducto')
+    form.addEventListener("submit", function (a) {
+        a.preventDefault();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success ms-2',
+                cancelButton: 'btn btn-danger'
+            },
+            buttonsStyling: false
+        })
+    
+        swalWithBootstrapButtons.fire({
+            title: '¿Desea Activar el Producto?',
+            text: "",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('toggleProducto').submit()
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelado',
+                    'El Producto no fue Activado',
+                    'error'
+                )
+            }
+        })
+    })
+}

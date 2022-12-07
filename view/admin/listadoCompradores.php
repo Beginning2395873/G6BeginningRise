@@ -158,12 +158,12 @@ if (!empty($_POST['search'])) {
                         if ($pagina != 1) {
                         ?>
                             <li class="page-item ">
-                                <a class="page-link" href="?pagina=<?php echo 1; ?>">
+                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo 1; ?>">
                                     <i class="fa-solid fa-backward-fast"></i>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">
+                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $pagina - 1; ?>">
                                     <i class="fa-solid fa-backward-step"></i>
                                 </a>
                             </li>
@@ -171,21 +171,21 @@ if (!empty($_POST['search'])) {
                         }
                         for ($i = 1; $i <= $totalPaginas; $i++) {
                             if ($i == $pagina) {
-                                echo '<li class="page-item active" aria-current="page"><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
+                                echo '<li class="page-item active" aria-current="page"><a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=' . $i . '">' . $i . '</a></li>';
                             } else {
-                                echo '<li class="page-item "><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
+                                echo '<li class="page-item "><a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=' . $i . '">' . $i . '</a></li>';
                             }
                         }
                         if ($pagina != $totalPaginas) {
                         ?>
 
                             <li class="page-item">
-                                <a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">
+                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $pagina + 1; ?>">
                                     <i class="fa-solid fa-forward-step"></i>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">
+                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $totalPaginas; ?>">
                                     <i class="fa-solid fa-forward-fast"></i>
                                 </a>
                             </li>

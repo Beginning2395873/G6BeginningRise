@@ -1,8 +1,8 @@
--- MariaDB dump 10.19  Distrib 10.4.24-MariaDB, for Win64 (AMD64)
+-- MariaDB dump 10.19  Distrib 10.4.27-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: beginningrise2
 -- ------------------------------------------------------
--- Server version	10.4.24-MariaDB
+-- Server version	10.4.27-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,7 +26,7 @@ CREATE TABLE `administradores` (
   `email_administrador` varchar(45) NOT NULL,
   PRIMARY KEY (`email_administrador`),
   CONSTRAINT `administradores_ibfk_1` FOREIGN KEY (`email_administrador`) REFERENCES `persona` (`email_persona`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,7 +55,7 @@ CREATE TABLE `carrito` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `carrito_ibfk_1` FOREIGN KEY (`email_cliente`) REFERENCES `clientes` (`email_cliente`),
   CONSTRAINT `carrito_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ CREATE TABLE `carrito_productos` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `carrito_productos_ibfk_1` FOREIGN KEY (`email_cliente`) REFERENCES `carrito` (`email_cliente`),
   CONSTRAINT `carrito_productos_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `clientes` (
   `telefono_cliente` bigint(10) NOT NULL,
   KEY `email_cliente` (`email_cliente`),
   CONSTRAINT `clientes_ibfk_1` FOREIGN KEY (`email_cliente`) REFERENCES `persona` (`email_persona`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,6 +115,7 @@ CREATE TABLE `clientes` (
 
 LOCK TABLES `clientes` WRITE;
 /*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` VALUES ('bodoquejuan@outlook.com','Calle 26 Sur #25-49',3066132694);
 /*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,7 +132,7 @@ CREATE TABLE `marcas` (
   `estado` tinyint(4) NOT NULL,
   PRIMARY KEY (`id_marca`),
   UNIQUE KEY `marca` (`marca`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,7 +162,7 @@ CREATE TABLE `pedidos` (
   CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`),
   CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`email_cliente`) REFERENCES `clientes` (`email_cliente`),
   CONSTRAINT `pedidos_ibfk_3` FOREIGN KEY (`nit_tienda`) REFERENCES `tiendas` (`nit_tienda`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,10 +192,10 @@ CREATE TABLE `persona` (
   `foto_perfil` blob DEFAULT NULL,
   `estado` tinyint(4) NOT NULL,
   PRIMARY KEY (`email_persona`),
-  UNIQUE KEY `contraseña_persona` (`contrasena_persona`),
+  UNIQUE KEY `contrase├▒a_persona` (`contrasena_persona`),
   KEY `tipo_documento_persona` (`tipo_documento_persona`),
   CONSTRAINT `persona_ibfk_1` FOREIGN KEY (`tipo_documento_persona`) REFERENCES `tipo_documento` (`t_doc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +204,7 @@ CREATE TABLE `persona` (
 
 LOCK TABLES `persona` WRITE;
 /*!40000 ALTER TABLE `persona` DISABLE KEYS */;
-INSERT INTO `persona` VALUES ('C.E.','46541268','John Xina','bing@chilling.com','$2y$10$WLpr88SmywxqAmxSg4.fZeJ26c//6CimlC.mf90jG43k1ohbO1IVq','2022-11-23 22:40:53','2022-11-23 22:40:53','config/img/persona/johnxina.jpg',1),('C.C.','79325649','Admin Poppy','prueba@admin.com','$2y$10$AM6DPP8uQSwe5nVVx5tMduore0ZGE3bHqKC4oAtZlGjbAyLenUknS','2022-11-24 00:14:53','2022-11-24 19:10:48','config/img/persona/pruebas.jpg',1);
+INSERT INTO `persona` VALUES ('C.E.','46541268','John Xina','bing@chilling.com','$2y$10$WLpr88SmywxqAmxSg4.fZeJ26c//6CimlC.mf90jG43k1ohbO1IVq','2022-11-23 22:40:53','2022-11-23 22:40:53','config/img/persona/johnxina.jpg',1),('C.E.','65125694','Juan Carlos Bodoque','bodoquejuan@outlook.com','$2y$10$m6lzuMsfSz50k4gRBvm5jO4732v5suHqKEqc34w1L5M5aUWM9quXy','2022-12-06 22:06:14','2022-12-06 22:06:14','config/img/persona/bodoque.jpg',1),('C.C.','79325649','Admin Poppy','prueba@admin.com','$2y$10$AM6DPP8uQSwe5nVVx5tMduore0ZGE3bHqKC4oAtZlGjbAyLenUknS','2022-11-24 00:14:53','2022-11-24 19:10:48','config/img/persona/pruebas.jpg',1);
 /*!40000 ALTER TABLE `persona` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +238,7 @@ CREATE TABLE `productos` (
   KEY `id_tipo` (`id_tipo`),
   CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`id_marca`) REFERENCES `marcas` (`id_marca`),
   CONSTRAINT `productos_ibfk_2` FOREIGN KEY (`id_tipo`) REFERENCES `tipo` (`id_tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +247,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'M_04','Pavilion Gaming 15-ec1037la',2,'SSD M.2 512GB','Ryzen 5 4600H','8GB de RAM DDR4','15.6\" 120Hz','NVIDIA GeForce GTX 1650Ti 4GB','Li-Poli 3 celdas 52,5 Wh',2800000,0,'2022-09-16 11:31:15','2022-09-16 11:31:36','../config/img/productos/hp-pgaming-15.png',1),(2,'M_02','Nitro 5 AN517-54-73Z3',2,'SSD M.2 1TB','Intel Core i7-11800H','16GB de RAM DDR4','17.3\" 144Hz','NVIDIA GeForce RTX 3060','Li-Ion 4 celdas',5416700,0,'2022-09-16 11:31:15','2022-09-16 19:40:31','../config/img/productos/acer-nitro-5.png',1),(3,'M_05','ROG Zephyrus Duo 15 SE GX551',2,'SSD M.2 1TB','Ryzen 9 5900HX','16GB de RAM DDR4','15.6\" 120Hz','NVIDIA GeForce RTX 3080','Li-Ion',15999900,0,'2022-09-16 11:31:15','2022-09-16 19:41:10','../config/img/productos/rog-zephirus-duo-15.png',1),(4,'M_01','IdeaPad 3 81WA00C3LM',1,'SSD 256GB','Intel Pentium Gold 6405U','8GB de RAM DDR4','14\" 60Hz','Gráficos Integrados Intel UHD Graphics','Li-ion',1449900,0,'2022-09-16 11:31:15','2022-09-16 19:42:37','../config/img/productos/lenovo-ideapad-3.jpg',1),(5,'M_03','GF65',2,'SSD M.2 512GB','Intel Core i7-10750H','8GB de RAM DDR4','15.6\" 144Hz','NVIDIA GeForce RTX 3060','Li-Poli 3 celdas 51 Wh',5699900,0,'2022-09-16 11:31:15','2022-09-16 19:43:13','../config/img/productos/msi-gf65.jpg',1),(21,'M_04','Notebook 15-db0011la',1,'1TB HDD','AMD A9-9425 ','8GB DDR4','15.6\" 60Hz','Integrados AMD Radeon R5','Li-Ion 3 Celdas, ',1520000,0,'2022-09-16 22:33:52','2022-09-16 22:35:07','../config/img/productos/hp-notebook-15.jpg',2),(22,'M_02','Aspire 5 A515-54-56KR',1,'256GB SSD','Intel Core i5 10210U','8GB de RAM DDR4','15.6\" 60Hz','Gráficos Integrados Intel UHD Graphics','Li-Ion 3 Celdas 48Wh',2799900,0,'2022-09-16 23:28:23','2022-09-16 23:30:58','../config/img/productos/acer-aspire-5.jpg',2);
+INSERT INTO `productos` VALUES (24,'M_02','Aspire 5 A515-54-56KR',1,'SSD 256GB','Intel Core i5 10210U','8GB de RAM DDR4','15.6\" 60Hz','Gr├íficos Integrados Intel UHD Graphics','Li-Ion 3 Celdas 48Wh',2499900,0,'2022-12-07 08:59:25','2022-12-07 08:59:25','config/img/productos/aspire-5-a515-54-56kr.png',1),(25,'M_05','E410',1,'256 GB SSD','Intel┬« Celeron┬« N4020','4GB de RAM','14\" 60Hz','Gr├íficos Integrados Intel UHD Graphics','Ion de litio',1799000,0,'2022-12-07 09:00:39','2022-12-07 09:00:39','config/img/productos/asus-e410.png',1),(27,'M_04','Notebook 15-db0011la',1,'HDD 1TB','AMD A9-9425 ','8GB de RAM DDR4-2666MHz','15.6\" 60Hz','Integrados AMD Radeon R5','Li-Ion 3 celdas y 41 Wh',1680000,0,'2022-12-07 09:02:29','2022-12-07 09:02:29','config/img/productos/hp-15-db0011la.png',1),(28,'M_01','IdeaPad 3 Intel Celeron',1,'1TB HDD','Procesador Intel Celeron N4020','4GB de RAM','14\" 60Hz','Gr├íficos Integrados Intel UHD Graphics','Li-Ion 2 celdas de 35 Wh',1749000,0,'2022-12-07 09:04:21','2022-12-07 09:04:21','config/img/productos/ideapad3-intel-celeron.png',1),(29,'M_01','IdeaPad Gaming 3i 6ta',2,'NVMe 512GB','Intel Core i5-11300H',' 8GB de RAM DDR4-3200MHz','15,6 \" 165Hz','NVIDIA GeForce 1650','Li-Poli de 3 celdas, 45Wh',4099900,0,'2022-12-07 09:06:51','2022-12-07 09:06:51','config/img/productos/lenovo-laptop-ideapad-gaming-3i-gen-6-15-intel-subseries.png',1),(30,'M_02','Nitro 5 AN517-54-73Z3',2,'NVMe 1TB','Intel Core i7-11800H','16GB (2x8GB) de RAM DDR4-3200MHz','17.3\" 144Hz','NVIDIA GeForce RTX 3060','4-Celdas Ion Litio (Li-Ion)',5416619,0,'2022-12-07 09:08:42','2022-12-07 09:08:42','config/img/productos/Nitro-5-A517.webp',1),(31,'M_04','Pavilion Gaming 15-ec1037la',2,'NVMe 512GB','Ryzen 5 4600H','8GB de RAM DDR4-3000MHz','15.6\" 165Hz','NVIDIA GeForce GTX 1650Ti 4GB','Li-Poli 3 celdas y 52,5 Wh',3795789,0,'2022-12-07 09:12:09','2022-12-07 09:12:09','config/img/productos/PAVILION GAMING 15-ec1037la.webp',1),(32,'M_05','ROG Zephyrus Duo 15 SE GX551',2,'NVMe 1TB','AMD Ryzen 9 5900HX','16GB (2x8GB) de RAM DDR4-3200MHz','15.6\" 120Hz','NVIDIA┬« GeForce RTXÔäó 3080','Li-Poli',15999900,0,'2022-12-07 09:16:28','2022-12-07 09:16:28','config/img/productos/ROG-zephyrus-duo-15-se-gx551.png',1);
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -270,8 +271,8 @@ CREATE TABLE `tiendas` (
   `estado` tinyint(4) NOT NULL,
   PRIMARY KEY (`nit_tienda`),
   UNIQUE KEY `email_tienda` (`email_tienda`),
-  UNIQUE KEY `contraseña_tienda` (`contrasena_tienda`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  UNIQUE KEY `contrase├▒a_tienda` (`contrasena_tienda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +299,7 @@ CREATE TABLE `tiendas_productos` (
   KEY `id_producto` (`id_producto`),
   CONSTRAINT `tiendas_productos_ibfk_1` FOREIGN KEY (`nit_tienda`) REFERENCES `tiendas` (`nit_tienda`),
   CONSTRAINT `tiendas_productos_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,7 +323,7 @@ CREATE TABLE `tipo` (
   `tipo` varchar(45) NOT NULL,
   PRIMARY KEY (`id_tipo`),
   UNIQUE KEY `tipo` (`tipo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -331,7 +332,7 @@ CREATE TABLE `tipo` (
 
 LOCK TABLES `tipo` WRITE;
 /*!40000 ALTER TABLE `tipo` DISABLE KEYS */;
-INSERT INTO `tipo` VALUES (2,'Gamer'),(1,'Ofimática');
+INSERT INTO `tipo` VALUES (2,'Gamer'),(1,'Ofim├ítica');
 /*!40000 ALTER TABLE `tipo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,7 +347,7 @@ CREATE TABLE `tipo_documento` (
   `t_doc` varchar(10) NOT NULL,
   `nombre_t_doc` varchar(40) NOT NULL,
   PRIMARY KEY (`t_doc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -355,7 +356,7 @@ CREATE TABLE `tipo_documento` (
 
 LOCK TABLES `tipo_documento` WRITE;
 /*!40000 ALTER TABLE `tipo_documento` DISABLE KEYS */;
-INSERT INTO `tipo_documento` VALUES ('C.C.','Cédula de Ciudadanía'),('C.E.','Cédula de Extranjería'),('T.I.','Tarjeta de Identidad');
+INSERT INTO `tipo_documento` VALUES ('C.C.','C├®dula de Ciudadan├¡a'),('C.E.','C├®dula de Extranjer├¡a'),('T.I.','Tarjeta de Identidad');
 /*!40000 ALTER TABLE `tipo_documento` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -379,7 +380,7 @@ CREATE TABLE `ventas` (
   CONSTRAINT `ventas_ibfk_1` FOREIGN KEY (`email_cliente`) REFERENCES `clientes` (`email_cliente`),
   CONSTRAINT `ventas_ibfk_2` FOREIGN KEY (`nit_tienda`) REFERENCES `tiendas` (`nit_tienda`),
   CONSTRAINT `ventas_ibfk_3` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id_producto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -400,4 +401,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-24 19:15:50
+-- Dump completed on 2022-12-07  9:20:41
