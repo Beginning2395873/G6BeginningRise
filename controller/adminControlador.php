@@ -123,12 +123,12 @@ class AdminControlador
             $resultado = $_modelo->modificarAdmin($ti_doc, $documento_admin, $nombre_admin, $correo_admin, $ruta);
             if ($resultado) {
                 echo "<script>
-                            alert('Datos actualizados 2');
+                            alert('Datos actualizados');
                             window.location='?page=admin'
                     </script>";
             } else {
                 echo "<script>
-                            alert('Ha ocurrido un error, inténtelo nuevamente 1');
+                            alert('Ha ocurrido un error, inténtelo nuevamente');
                             window.location='?page=admin'
                     </script>";
             }

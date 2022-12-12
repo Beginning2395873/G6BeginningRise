@@ -79,6 +79,16 @@
             $_addProd = new ProductoControlador;
             $_addProd->añadirProducto();
             break;
+        case 'toggleProducto':
+            require "controller/productoControlador.php";
+            $_togProd = new ProductoControlador;
+            $_togProd->toggleProducto();
+            break;
+        case 'productoEditar':
+            require "controller/productoControlador.php";
+            $_edProd = new ProductoControlador;
+            $_edProd->editarProducto();
+            break;
         case 'login': 
             require "controller/loginControlador.php";
             $_login = new LoginControlador();

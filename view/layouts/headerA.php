@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="container-fluid" style="max-width: 260px;">
-                <div class="row">
+                <div class="row mx-auto" style="max-width: 140px;">
                     <div class="col">
                         <div class="dropdown">
                             <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
