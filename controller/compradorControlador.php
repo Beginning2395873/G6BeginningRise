@@ -109,7 +109,7 @@ class CompradorControlador
                     </script>";
             } else {
                 echo "<script>
-                            alert('Ha ocurrido un error, inténtelo nuevamente 1');
+                            alert('Ha ocurrido un error, inténtelo nuevamente');
                             window.location='?page=cliente'
                     </script>";
             }

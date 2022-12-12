@@ -30,13 +30,12 @@ class TiendaControlador
 
     public function tiendaRegistro()
     {
-        // Instancia del modelo Tienda
-        $_modelo = new Tienda;
         // Llamado a la vista
         require "view/front/registroTienda.php";
+        // Instancia del modelo Tienda
+        $_modelo = new Tienda;
         // Validación método POST en formulario
         if (isset($_POST['añadir'])) {
-
             // Recibir datos del formulario
             $nit = $_POST['nit'];
             $nombreTienda = $_POST['nombreTienda'];
@@ -47,12 +46,10 @@ class TiendaControlador
             $pass = $_POST['pass'];
             $pass2 = $_POST['pass2'];
             $fotoTienda = $_FILES['fotoTienda']['tmp_name'];
-
             //Subir Imagen
             $img = $_FILES['fotoTienda']['name'];
             $ruta = 'config/img/tiendas/' . $img;
             move_uploaded_file($fotoTienda, $ruta);
-
             // Validar equivalencia entre correos y contraseñas
             if ($correoTienda === $correo2Tienda and $pass === $pass2) {
                 // Llamado al modelo con los datos recibidos
@@ -95,8 +92,9 @@ class TiendaControlador
             if ($img!=""){
                 $ruta = 'config/img/tiendas/' . $img;
                 move_uploaded_file($fotoTienda, $ruta);
+            } else {
+                $ruta = "";
             }
-            $ruta = "";
             $resultado = $_modelo->modificarTienda($nit, $nombreTienda, $direccion, $telefono, $correoTienda, $ruta);
             if ($resultado) {
                 echo "<script>
@@ -110,7 +108,6 @@ class TiendaControlador
             }
         }
     }
-
     public function eliminarTienda()
     {
         $_modelo = new Tienda;

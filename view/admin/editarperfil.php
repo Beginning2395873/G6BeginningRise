@@ -1,24 +1,19 @@
 <?php
-session_start();
-
-$user = $_SESSION['login'];
-$db = new Conexion;
-$db->conectar();
-$sql = $db->conexion->prepare("SELECT * FROM persona WHERE email_persona = '$user'");
-$sql->execute();
-$arreglo = $sql->fetch(PDO::FETCH_ASSOC);
-$t_doc = $arreglo['tipo_documento_persona'];
-
-if($t_doc=="C.C.") {
-    $t_doc = "Cédula de Ciudadanía";
-} else if ($t_doc=="C.E.") {
-    $t_doc = "Cédula de Extranjería";
-} else if ($t_doc=="T.I.") {
-    $t_doc = "Tarjeta de Identidad";
-}
-
-
-
+    session_start();
+    $user = $_SESSION['login'];
+    $db = new Conexion;
+    $db->conectar();
+    $sql = $db->conexion->prepare("SELECT * FROM persona WHERE email_persona = '$user'");
+    $sql->execute();
+    $arreglo = $sql->fetch(PDO::FETCH_ASSOC);
+    $t_doc = $arreglo['tipo_documento_persona'];
+    if($t_doc=="C.C.") {
+        $t_doc = "Cédula de Ciudadanía";
+    } else if ($t_doc=="C.E.") {
+        $t_doc = "Cédula de Extranjería";
+    } else if ($t_doc=="T.I.") {
+        $t_doc = "Tarjeta de Identidad";
+    }
 ?>
 
 <?php require "view/layouts/headerA.php" ?>
