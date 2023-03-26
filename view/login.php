@@ -1,8 +1,20 @@
 <?php require "layouts/header.php" ?>
 <div class="container">
     <div class="row">
-        <div class="col-12 mx-auto" style="max-width: 500px;">
-            <div id="col-login" class="card mt-5" style="background-color: #0A1E35; color: #fff;">
+        <div class="col-12 mx-auto" style="max-width: 475px;">
+            <?php if (isset($_GET['msg'])) { ?>
+                <div class="alert alert-danger text-center align-items-middle" style="max-width: 475px;">
+                    <i class="fa-solid fa-circle-xmark me-2"></i>
+                    <?php echo $_GET['msg'] ?>
+                </div>
+            <?php } ?>
+            <?php if (isset($_GET['msj'])) { ?>
+                <div class="alert alert-success text-center align-items-middle" style="max-width: 475px;">
+                    <i class="fa-solid fa-circle-check me-2"></i>
+                    <?php echo $_GET['msj'] ?>
+                </div>
+            <?php } ?>
+            <div id="col-login" class="card mt-2" style="background-color: #0A1E35; color: #fff;">
                 <div class="card-header">
                     <h2 class="text-center">
                         <i class="fa-solid fa-user-lock"></i>
@@ -31,18 +43,12 @@
                                 </div>
 
                                 <!-- Recordar / Olvidar Contraseña  -->
-                                <!-- <div class="row mb-4">
-                                    <div class="col">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                            <label class="form-check-label" for="flexCheckChecked">Recordar</label>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <a href="passrecover.php" style="color: #fff; text-decoration: none;">¿Olvidó su
+                                <div class="row mb-4">
+                                    <div class="col mx-auto" style="max-width: 200px;">
+                                        <a class="" href="?page=passrecover" style="color: #fff;">¿Olvidó su
                                             contraseña?</a>
                                     </div>
-                                </div> -->
+                                </div>
 
                                 <!-- Submit button -->
                                 <div class="container">
@@ -53,7 +59,6 @@
                                     </div>
                                 </div>
                             </form>
-                            <p class="text-danger"><?php echo (isset($_GET['msg'])) ? $_GET['msg'] : "" ?></p>
                         </div>
                     </div>
                 </div>

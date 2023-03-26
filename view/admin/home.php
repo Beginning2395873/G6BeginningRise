@@ -1,8 +1,18 @@
 <?php
-
 session_start();
+// Capturo el correo para futuras consultas
+$_SESSION['inicio'] = time();
+$sestime = 30000;
+if (isset($_SESSION['inicio']) && time() - $_SESSION['inicio'] > $sestime ) {
+    header('Location: ?page=logout');
+}
 
-$user = $_SESSION['login'];
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header("Location: ?page=logout");
+}
+
 $db = new Conexion;
 $db->conectar();
 
@@ -13,14 +23,13 @@ if ($sql2->fetch(PDO::FETCH_NUM)) {
     $sql->execute();
     $arreglo = $sql->fetch(PDO::FETCH_ASSOC);
     $format = $arreglo['num_doc_persona'];
-    if(strlen($format) == 8){
+    if (strlen($format) == 8) {
         $nformat = substr($format, 0, 2) . "." . substr($format, 2, 3) . "." . substr($format, 5, 3);
-    } elseif(strlen($format) == 10){
+    } elseif (strlen($format) == 10) {
         $nformat = substr($format, 0, 1) . "." . substr($format, 1, 3) . "." . substr($format, 4, 3) . "." . substr($format, 7, 3);
     }
-    
 } else {
-    echo "F manito";
+    echo "";
 }
 
 ?>
@@ -76,21 +85,25 @@ if ($sql2->fetch(PDO::FETCH_NUM)) {
                     <h3 class="text-center ">Opciones</h3>
                 </div>
                 <div class="d-grid gap-3">
-                    <a href="<?php echo urlsite?>?page=admin&opcion=listaTiendas" class="btn btn-success btn-lg">
-                        <i class="fa-solid fa-cart-shopping me-2"></i>
-                        Lista de Tiendas
+                    <a href="<?php echo urlsite ?>?page=admin&opcion=listaTiendas" class="btn btn-success btn-lg">
+                        <i class="fa-solid fa-building"></i></i>
+                        Lista de Empresas
                     </a>
-                    <a href="<?php echo urlsite?>?page=admin&opcion=listaCompradores" class="btn btn-primary btn-lg">
+                    <a href="<?php echo urlsite ?>?page=admin&opcion=informeTotal" class="btn btn-success btn-lg">
+                        <i class="fa-solid fa-cart-shopping me-2"></i>
+                        Informe Total de Ventas
+                    </a>
+                    <a href="<?php echo urlsite ?>?page=admin&opcion=listaCompradores" class="btn btn-primary btn-lg">
                         <i class="fa-solid fa-users me-2"></i>
                         Lista de Compradores
                     </a>
-                    <a href="<?php echo urlsite?>?page=admin&opcion=listaAdmin" class="btn btn-dark btn-lg">
+                    <a href="<?php echo urlsite ?>?page=admin&opcion=listaAdmin" class="btn btn-dark btn-lg">
                         <i class="fa-solid fa-user-gear me-2"></i>
                         Lista de Administradores
                     </a>
                     <a href="<?php echo urlsite ?>?page=admin&opcion=nuevoAdmin" class="btn btn-dark btn-lg">
                         <i class="fa-solid fa-user-plus me-2"></i>
-                        Añadir Administrador
+                        Añadir Nuevo Administrador
                     </a>
                 </div>
             </div>

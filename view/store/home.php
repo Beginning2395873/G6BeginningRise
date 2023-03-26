@@ -1,7 +1,18 @@
 <?php
 session_start();
+// Capturo el correo para futuras consultas
+$_SESSION['inicio'] = time();
+$sestime = 30000;
+if (isset($_SESSION['inicio']) && time() - $_SESSION['inicio'] > $sestime ) {
+    header('Location: ?page=logout');
+}
 
-$user = $_SESSION['login'];
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header("Location: ?page=logout");
+}
+
 $db = new Conexion;
 $db->conectar();
 $sql = $db->conexion->prepare("SELECT * FROM tiendas WHERE email_tienda = '$user'");

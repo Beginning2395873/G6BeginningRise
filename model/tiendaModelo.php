@@ -5,7 +5,7 @@ class Tienda
     private $_dbcon; // Refiere a la conexion
     public function __construct()
     {
-        $this->_dbcon = new Conexion();
+        $this->_dbcon = new Conexion;
     }
     
 
@@ -37,15 +37,15 @@ class Tienda
         }
     }
 
-    public function eliminarTienda($nit) {
+    public function toggleTienda($nit) {
         $this->_dbcon->conectar();
         $sql = $this->_dbcon->conexion->query("SELECT * FROM tiendas WHERE tiendas.nit_tienda = '$nit'");
         $array = $sql->fetch(PDO::FETCH_ASSOC);
         $status = $array['estado'];
         if($status=='1'){
-            $update = $this->_dbcon->conexion->query("UPDATE tiendas SET tiendas.estado = 0 WHERE tiendas.nit_tienda = '$nit'");
+            $update = $this->_dbcon->conexion->query("UPDATE tiendas SET tiendas.estado = 0, tiendas.fecha_actualizacion = NOW() WHERE tiendas.nit_tienda = '$nit'");
         } else {
-            $update = $this->_dbcon->conexion->query("UPDATE tiendas SET tiendas.estado = 1 WHERE tiendas.nit_tienda = '$nit'");
+            $update = $this->_dbcon->conexion->query("UPDATE tiendas SET tiendas.estado = 1, tiendas.fecha_actualizacion = NOW() WHERE tiendas.nit_tienda = '$nit'");
         }
         $this->_dbcon->desconectar();
         if($update) {
@@ -53,5 +53,25 @@ class Tienda
         } else {
             return false;
         }
+    }
+    
+    public function añadirBanner($nit, $ruta) {
+        $this->_dbcon->conectar();
+        if($ruta != "") {
+            $sql = $this->_dbcon->conexion->query(
+                "UPDATE tiendas
+                SET tiendas.banner_prom = '$ruta',
+                tiendas.fecha_actualizacion = NOW()
+                WHERE tiendas.nit_tienda = '$nit'"
+            );
+            if($sql) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        $this->_dbcon->desconectar();
     }
 }

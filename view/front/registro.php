@@ -5,7 +5,7 @@
         <div class="col">
             <a href="<?php echo urlsite ?>?page=registroComprador">
                 <button class="btn btn-outline-link">
-                    <div class="card fs-5" style="width: 250px;">
+                    <div class="card fs-5 rol" style="width: 10em;">
                         <div class="card-header text-center text-black">
                             <i class="fa-solid fa-user fa-10x"></i>
                         </div>
@@ -19,12 +19,12 @@
         <div class="col">
             <a href="<?php echo urlsite ?>?page=registroTienda">
                 <button class="btn btn-outline-link">
-                    <div class="card fs-5" style="width: 250px;">
+                    <div class="card fs-5 rol" style="width: 10em;">
                         <div class="card-header text-center text-black">
-                            <i class="fa-solid fa-cart-shopping fa-10x"></i>
+                            <i class="fa-solid fa-building fa-10x"></i>
                         </div>
                         <div class="card-body fs-2 fw-bold">
-                            Tienda
+                            Empresa
                         </div>
                     </div>
                 </button>

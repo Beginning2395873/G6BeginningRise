@@ -1,204 +1,141 @@
 <?php
-
 session_start();
-$user = $_SESSION['login'];
-
-if ($_POST) {
-    $busqueda = strtolower($_REQUEST['busqueda']);
+// Capturo el correo para futuras consultas
+$_SESSION['inicio'] = time();
+$sestime = 30000;
+if (isset($_SESSION['inicio']) && time() - $_SESSION['inicio'] > $sestime ) {
+    header('Location: ?page=logout');
 }
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header("Location: ?page=logout");
+}
+
+// Conexión
 $connect = new Conexion();
 $connect->conectar();
-$query = $connect->conexion->prepare("SELECT count(*) as totalRegistros from tiendas");
-$query->execute();
-$arreglo = $query->fetch();
-$totalRegistros = $arreglo["totalRegistros"];
-
-$maximoRegistros = 5;
-if (empty($_GET['pagina'])) {
-    $pagina = 1;
-} else {
-    $pagina = $_GET['pagina'];
-}
-$desde = ($pagina - 1) * $maximoRegistros;
-$totalPaginas = ceil($totalRegistros / $maximoRegistros);
-
-if (!empty($_POST['search'])) {
-    // Barra de Búsqueda Paginador
-    $cuentaBusqueda = $connect->conexion->prepare("SELECT count(tiendas.nit_tienda) as totalBusqueda, tiendas.nombre_tienda, tiendas.direccion_tienda, tiendas.telefono_tienda, tiendas.email_tienda, tiendas.foto_tienda, tiendas.estado FROM tiendas where nit_tienda like '%$busqueda%' or nombre_tienda like '%$busqueda%'");
-    $cuentaBusqueda->execute();
-    $arregloBusqueda = $cuentaBusqueda->fetch();
-    $totalBusqueda = $arregloBusqueda['totalBusqueda'];
-
-    $maximoRegistrosBusqueda = 5;
-    if (empty($_GET['pagina'])) {
-        $pagina = 1;
-    } else {
-        $pagina = $_GET['pagina'];
-    }
-    $desde = ($pagina - 1) * $maximoRegistrosBusqueda;
-    $totalPaginas = ceil($totalBusqueda / $maximoRegistrosBusqueda);
-
-    // Barra de Búsqueda
-    $query2 = $connect->conexion->prepare("SELECT tiendas.nit_tienda, tiendas.nombre_tienda, tiendas.direccion_tienda, tiendas.telefono_tienda, tiendas.email_tienda, tiendas.foto_tienda, tiendas.estado FROM tiendas where nit_tienda like '%$busqueda%' or nombre_tienda like '%$busqueda%' limit $desde,$maximoRegistros");
-    $query2->execute();
-    $arreglo2 = $query2->fetch();
-} else {
-    $query2 = $connect->conexion->prepare("SELECT tiendas.nit_tienda, tiendas.nombre_tienda, tiendas.direccion_tienda, tiendas.telefono_tienda, tiendas.email_tienda, tiendas.foto_tienda, tiendas.estado FROM tiendas where tiendas.estado = '1' limit $desde,$maximoRegistros");
-    $query2->execute();
-    $arreglo2 = $query2->fetch();
-}
-
-
+// Consulta
+$query2 = $connect->conexion->prepare(
+    "SELECT tiendas.nit_tienda, 
+    tiendas.nombre_tienda, 
+    tiendas.direccion_tienda, 
+    tiendas.telefono_tienda, 
+    tiendas.email_tienda, 
+    tiendas.foto_tienda, 
+    tiendas.estado 
+    FROM tiendas"
+);
+$query2->execute();
+$arreglo2 = $query2->fetch(PDO::FETCH_ASSOC);
 ?>
-
 <?php require "view/layouts/headerA.php" ?>
-
-<script>
-    var respuesta = confirm("¿Desea eliminar el registro?")
-    if (respuesta==true) {
-        return true;
-    } else {
-        return false;
-    }
-</script>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-6">
-            <div class="input-group d-flex" style="max-width: 400px;">
-                <!-- Búsqueda -->
-                <form action="<?php echo urlsite ?>?page=admin&opcion=listaTiendas" class="d-flex" role="search" method="POST">
-                    <input type="search" id="buscar" class="form-control me-2" name="busqueda" placeholder="Buscar Tienda" aria-label="Search" />
-                    <button type="submit" name="search" role="button" class="btn btn-outline-primary" value="Buscar"><i class="fas fa-search"></i></button>
-                </form>
-                <a href="<?php echo urlsite ?>?page=admin&opcion=listaTiendas" class="btn btn-outline-warning ms-2">
-                    <i class="fa-solid fa-list"></i>
-                    Listar
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container mt-4">
-    <div class="row justify-content-center align-self-center ">
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                            <tr>
-                                <td colspan="6" class="p-3 mb-2">
-                                    <h5>Lista de Tiendas</h5>
-                                </td>
-                            </tr>
-
-                            </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="table-secondary">
-                                <!-- Títulos de las columnas -->
-                                <td scope="col">NIT</td>
-                                <td scope="col">Nombre</td>
-                                <td scope="col">Dirección</td>
-                                <td scope="col">Teléfono</td>
-                                <td scope="col">Correo electrónico</td>
-                                <td scope="col">Foto perfil</td>
-                                <td scope="col">Estado</td>
-                                <td scope="col">Activar/ <br>Desactivar</td>
-                            </tr>
-                            <?php
-                            if ($arreglo2 == 0) {
-                            ?>
-                                <div class="alert alert-success" role="alert">
-                                    <?php echo "No hay registros" ?>
-                                </div>
-                                <?php
-                            } else {
-                                do {
-                                    // Estado
-                                    $stauts = '';
-                                    if ($arreglo2[6] == 0) {
-                                        $status = 'Inactivo';
-                                    } else if ($arreglo2[6] == 2) {
-                                        $status = 'En Oferta';
-                                    } else {
-                                        $status = 'Activo';
-                                    }
-                                ?>
-                                    <tr>
-                                        <td><?php echo $arreglo2[0] ?></td>
-                                        <td><?php echo $arreglo2[1] ?></td>
-                                        <td><?php echo $arreglo2[2] ?></td>
-                                        <td><?php echo $arreglo2[3] ?></td>
-                                        <td><?php echo $arreglo2[4] ?></td>
-                                        <td><img class="rounded-circle" src="<?php echo $arreglo2[5] ?>" alt="" height="80px" width="80px"></td>
-                                        <td><?php echo $status ?></td>
-                                        <?php if($status=='Activo'){?>
-                                            <td><?php echo "<form id='desactivarTienda' action='".urlsite."?page=eliminarTienda' name='desactivarTienda' method='POST'>
-                                                <input type='hidden' id='nit' name='nit' value='$arreglo2[0]' />
-                                                <button type='submit' name='eliminar' class='btn btn-warning' onClick='alertaTiendaDesactivar()' ><i class='fa-solid fa-circle-xmark'></i></button>
-                                            </form>" ?></td>
-                                        <?php } else if($status=='Inactivo') {?>
-                                            <td><?php echo "<form id='desactivarTienda' action='".urlsite."?page=eliminarTienda' name='desactivarTienda' method='POST'>
-                                                <input type='hidden' id='nit' name='nit' value='$arreglo2[0]' />
-                                                <button type='submit' name='eliminar' class='btn btn-success' onClick='alertaTiendaActivar()' ><i class='fa-solid fa-eye'></i></button>
-                                            </form>" ?></td>
-                                        <?php }?>
-                                    </tr>
-                            <?php
-                                } while ($arreglo2 = $query2->fetch());
-                            }
-                            ?>
-                        </tbody>
-                    </table>
+<div class="container-fluid my-4">
+    <div class="row d-flex justify-content-center">
+        <div class="rounded col-sm-11 col-md-11 col-lg-11 col-xl-11 bg-white">
+            <!-- nit, nombre, dirección, telefono, correo, foto, estado, activar/desactivar -->
+            <div class="my-2">
+                <h3 class="text-center my-3">Lista de Empresas</h3>
+                <!-- Botones -->
+                <div class="row d-flex justify-content-start">
+                    <!-- Regresar -->
+                    <div class="col" style="max-width: 140px;">
+                        <a onclick="window.history.back();" class="btn btn-dark my-2">
+                            <i class="fa-solid fa-arrow-left me-2"></i>
+                            Regresar
+                        </a>
+                    </div>
+                    <!-- Listar -->
+                    <div class="col" style="max-width: 120px;">
+                        <a href="" class="btn btn-secondary my-2">
+                            <i class="fa-solid fa-list me-2"></i>
+                            Listar
+                        </a>
+                    </div>
                 </div>
             </div>
-            <nav class="" aria-label="paginador">
-                <ul class="pagination justify-content-center">
-                    <?php
-                    if ($pagina != 1) {
-                    ?>
-                        <li class="page-item ">
-                            <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo 1; ?>">
-                                <i class="fa-solid fa-backward-fast"></i>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $pagina - 1; ?>">
-                                <i class="fa-solid fa-backward-step"></i>
-                            </a>
-                        </li>
-                    <?php
-                    }
-                    for ($i = 1; $i <= $totalPaginas; $i++) {
-                        if ($i == $pagina) {
-                            echo '<li class="page-item active" aria-current="page"><a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=' . $i . '">' . $i . '</a></li>';
-                        } else {
-                            echo '<li class="page-item "><a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=' . $i . '">' . $i . '</a></li>';
+            <div class="table-responsive px-2 mb-4">
+                <table class="table table-hover align-middle" id="myTable">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th>NIT</th>
+                            <th>Nombre de la Empresa</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th>Correo Electrónico</th>
+                            <th>Foto de perfil</th>
+                            <th>Estado</th>
+                            <th class="no-exportar">Activar/Desactivar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($arreglo2 === false) { ?>
+                            <div class="alert alert-info" role="alert">
+                                <?php echo "No hay registros" ?>
+                            </div>
+                            <?php } else {
+                            do {
+                                // Estado
+                                $stauts = '';
+                                if ($arreglo2['estado'] == 0) {
+                                    $clase = 'text-center py-auto my-1 p-2 rounded bg-danger text-light fw-semibold';
+                                    $status = 'Inactivo';
+                                } else if ($arreglo2['estado'] == 1) {
+                                    $status = 'Activo';
+                                    $clase = 'text-center py-auto my-1 p-2 rounded bg-success text-light fw-semibold';
+                                }
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $arreglo2['nit_tienda'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['nombre_tienda'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['direccion_tienda'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['telefono_tienda'] ?>
+                                    </td>
+                                    <td><?php echo $arreglo2['email_tienda'] ?></td>
+                                    <td class="text-center">
+                                        <?php if ($arreglo2['foto_tienda'] === "config/img/persona/") { ?>
+                                            <img src="<?php echo urlsite ?>/config/img/persona/foto_gen.png" alt="Foto" width="50" height="50">
+                                        <?php } else { ?>
+                                            <img src="<?php echo $arreglo2['foto_tienda'] ?>" alt="Foto" class="rounded-circle" width="45" height="45">
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <span class="<?php echo $clase ?>">
+                                            <?php echo $status ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if ($status == 'Activo') {
+                                            echo '
+                                                <button onclick="confirmarDesactivarTienda(`' . $arreglo2['nit_tienda'] . '`)" class="btn btn-outline-danger">
+                                                    <i class="fa-regular fa-circle-xmark"></i>
+                                                </button>
+                                                ';
+                                        } elseif ($status == "Inactivo") {
+                                            echo '
+                                                <button onclick="confirmarActivarTienda(`' . $arreglo2['nit_tienda'] . '`)" class="btn btn-outline-success">
+                                                    <i class="fa-regular fa-circle-check"></i>
+                                                </button>
+                                                ';
+                                        }
+                                        ?>
+                                    </td>
+                                </tr>
+                        <?php } while ($arreglo2 = $query2->fetch(PDO::FETCH_ASSOC));
                         }
-                    }
-                    if ($pagina != $totalPaginas) {
-                    ?>
-
-                        <li class="page-item">
-                            <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $pagina + 1; ?>">
-                                <i class="fa-solid fa-forward-step"></i>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $totalPaginas; ?>">
-                                <i class="fa-solid fa-forward-fast"></i>
-                            </a>
-                        </li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-            </nav>
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
-
 <?php require "view/layouts/footer.php" ?>

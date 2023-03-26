@@ -1,6 +1,107 @@
 /* Color Crema de fondo */
 body {
-    background-color: lightgrey;
+    background-color: silver;
+}
+
+.rol {
+    font-size: 2em !important;
+}
+
+/* Spinner-principal */
+.spinner-container {
+    background-color: rgba(0, 0, 0, .4);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    display: block;
+    margin: 15px auto;
+    position: relative;
+    color: #FFF;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+.loader::after,
+.loader::before {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 50%;
+    left: 50%;
+    transform: scale(0.5) translate(0, 0);
+    background-color: #FFF;
+    border-radius: 50%;
+    animation: animloader 1s infinite ease-in-out;
+}
+
+.loader::before {
+    background-color: #17459b;
+    transform: scale(0.5) translate(-48px, -48px);
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animloader {
+    50% {
+        transform: scale(1) translate(-50%, -50%);
+    }
+}
+
+/* Spinner Ver Mas */
+.loading {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: block;
+    margin: 15px auto;
+    position: relative;
+    background: #FFF;
+    box-shadow: -24px 0 #FFF, 24px 0 #FFF;
+    box-sizing: border-box;
+    animation: shadowPulse 2s linear infinite;
+}
+
+@keyframes shadowPulse {
+    33% {
+        background: #FFF;
+        box-shadow: -24px 0 #17459b, 24px 0 #FFF;
+    }
+
+    66% {
+        background: #17459b;
+        box-shadow: -24px 0 #FFF, 24px 0 #FFF;
+    }
+
+    100% {
+        background: #FFF;
+        box-shadow: -24px 0 #FFF, 24px 0 #17459b;
+    }
+}
+.ajax-loading {
+    display: block;
+    text-align: center;
 }
 
 /* Color botón */
@@ -12,7 +113,7 @@ body {
 }
 
 /* Búsqueda */
-#searchform.widget_search #s,
+/* #searchform.widget_search #s,
 #search #s {
     width: 165px;
     display: block;
@@ -26,94 +127,27 @@ body {
     -webkit-border-radius: 10px 0 0 0;
     font-family: Arial !important;
     font-size: 14px;
+} */
+
+.list-group {
+    list-style: none;
 }
 
-/* Tarjetitas */
-#galeria {
-    margin: 10px 20px;
-    box-shadow: 0 4px 8px 0 lightblue, 0 6px 20px 0 rgb(0, 0, 0, 0.19);
-    max-width: 350px;
-    border-radius: 5px;
-    background-color: #fff;
-    padding: 20px;
+
+.estrellas {
+    text-shadow: 0 0 1px grey;
+    cursor: pointer;
 }
 
-#galeria img {
-    width: 100%;
-    height: auto;
+.estrella_dorada {
+    color: gold;
 }
 
-#galeria:hover {
-    border: 1px solid lightskyblue;
-    transform: rotate(-3deg);
+.estrella_normal {
+    color: grey;
 }
 
-#pie {
-    text-align: center;
-    padding: 10px;
-}
 
-/* Gráfico */
-:root {
-    --color_1: #3b5998;
-    --color_2: #00acce;
-    --color_3: #e95950;
-    --color_4: #c8232c;
-    --background-color: rgb(15, 27, 27);
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.container_grafico {
-    width: 700px;
-    height: 550px;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.grafico {
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background-image: conic-gradient(var(--color_1) 40%,
-            var(--color_2) 40% 70%,
-            var(--color_3) 70% 88%,
-            var(--color_4) 88%);
-    box-shadow: 1px 1px 5px 1px rgb(70, 70, 70);
-}
-
-.leyenda_all {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-[class^="color_"] {
-    width: 15px;
-    height: 20px;
-    background-color: var(--color_1);
-    margin-right: 8px;
-    border-radius: 3px;
-}
-
-.color_2 {
-    background-color: var(--color_2);
-}
-
-.color_3 {
-    background-color: var(--color_3);
-}
-
-.color_4 {
-    background-color: var(--color_4);
-}
 
 /* Formulario Login */
 
@@ -247,5 +281,207 @@ body {
     to {
         width: 0;
         background: transparent;
+    }
+}
+
+/* Botón Carrito */
+.buttonCarrito {
+    --background: #198754;
+    --text: #FFF;
+    --cart: #FFF;
+    --tick: var(--background);
+    position: relative;
+    border: none;
+    background: none;
+    padding: 8px 28px;
+    border-radius: 8px;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    mask-image: -webkit-radial-gradient(white, black);
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+    min-width: 144px;
+    color: var(--text);
+    background: var(--background);
+    transform: scale(var(--scale, 1));
+    transition: transform 0.4s cubic-bezier(0.36, 1.01, 0.32, 1.27);
+}
+
+.buttonCarrito:active {
+    --scale: 0.95;
+}
+
+.buttonCarrito span {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    margin-left: -8px;
+    line-height: 26px;
+    transform: translateY(var(--span-y, 0));
+    transition: transform 0.7s ease;
+}
+
+.buttonCarrito span::before,
+.buttonCarrito span::after {
+    content: "";
+    width: var(--w, 2px);
+    height: var(--h, 14px);
+    border-radius: 1px;
+    position: absolute;
+    left: var(--l, 8px);
+    top: var(--t, 6px);
+    background: currentColor;
+    transform: scale(0.75) rotate(var(--icon-r, 0deg)) translateY(var(--icon-y, 0));
+    transition: transform 0.65s ease 0.05s;
+}
+
+.buttonCarrito span::after {
+    --w: 14px;
+    --h: 2px;
+    --l: 2px;
+    --t: 12px;
+}
+
+.buttonCarrito .cart {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -13px 0 0 -18px;
+    transform-origin: 12px 23px;
+    transform: translateX(-120px) rotate(-18deg);
+}
+
+.buttonCarrito .cart::before,
+.buttonCarrito .cart::after {
+    content: "";
+    position: absolute;
+}
+
+.buttonCarrito .cart::before {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 2px var(--cart);
+    bottom: 0;
+    left: 9px;
+    filter: drop-shadow(11px 0 0 var(--cart));
+}
+
+.buttonCarrito .cart::after {
+    width: 16px;
+    height: 9px;
+    background: var(--cart);
+    left: 9px;
+    bottom: 7px;
+    transform-origin: 50% 100%;
+    transform: perspective(4px) rotateX(-6deg) scaleY(var(--fill, 0));
+    transition: transform 1.2s ease var(--fill-d);
+}
+
+.buttonCarrito .cart svg {
+    z-index: 1;
+    width: 36px;
+    height: 26px;
+    display: block;
+    position: relative;
+    fill: none;
+    stroke: var(--cart);
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.buttonCarrito .cart svg polyline:last-child {
+    stroke: var(--tick);
+    stroke-dasharray: 10px;
+    stroke-dashoffset: var(--offset, 10px);
+    transition: stroke-dashoffset 0.4s ease var(--offset-d);
+}
+
+.buttonCarrito.loading {
+    --scale: 0.95;
+    --span-y: -32px;
+    --icon-r: 180deg;
+    --fill: 1;
+    --fill-d: 0.8s;
+    --offset: 0;
+    --offset-d: 1.73s;
+}
+
+.buttonCarrito.loading .cart {
+    -webkit-animation: cart 3.4s linear forwards 0.2s;
+    animation: cart 3.4s linear forwards 0.2s;
+}
+
+@-webkit-keyframes cart {
+    12.5% {
+        transform: translateX(-60px) rotate(-18deg);
+    }
+
+    25%,
+    45%,
+    55%,
+    75% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+
+    44%,
+    56% {
+        transform-origin: 12px 23px;
+    }
+
+    45%,
+    55% {
+        transform-origin: 50% 50%;
+    }
+
+    87.5% {
+        transform: translateX(70px) rotate(-18deg);
+    }
+
+    100% {
+        transform: translateX(140px) rotate(-18deg);
+    }
+}
+
+@keyframes cart {
+    12.5% {
+        transform: translateX(-60px) rotate(-18deg);
+    }
+
+    25%,
+    45%,
+    55%,
+    75% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale(0.9);
+    }
+
+    44%,
+    56% {
+        transform-origin: 12px 23px;
+    }
+
+    45%,
+    55% {
+        transform-origin: 50% 50%;
+    }
+
+    87.5% {
+        transform: translateX(70px) rotate(-18deg);
+    }
+
+    100% {
+        transform: translateX(140px) rotate(-18deg);
     }
 }

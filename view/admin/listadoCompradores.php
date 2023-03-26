@@ -1,201 +1,155 @@
 <?php
 session_start();
-$user = $_SESSION['login'];
+// Capturo el correo para futuras consultas
+$_SESSION['inicio'] = time();
+$sestime = 30000;
+if (isset($_SESSION['inicio']) && time() - $_SESSION['inicio'] > $sestime ) {
+    header('Location: ?page=logout');
+}
 
-// Capturar lo que se escribió en la barra de búsqueda
-if ($_POST) {
-    $busqueda = strtolower($_REQUEST['busqueda']);
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header("Location: ?page=logout");
 }
 
 // Conexión y consulta para total de registros
 $connect = new Conexion();
 $connect->conectar();
-$query = $connect->conexion->prepare("SELECT count(*) as totalRegistros from clientes");
-$query->execute();
-$arreglo = $query->fetch();
-$totalRegistros = $arreglo["totalRegistros"];
 
-// Máximo de registros para el paginador
-$maximoRegistros = 5;
-if (empty($_GET['pagina'])) {
-    $pagina = 1;
-} else {
-    $pagina = $_GET['pagina'];
-}
-$desde = ($pagina - 1) * $maximoRegistros;
-$totalPaginas = ceil($totalRegistros / $maximoRegistros);
-
-if (!empty($_POST['search'])) {
-
-    // Para el paginador luego de buscar
-    $sqlcuentaBusqueda = $connect->conexion->prepare("SELECT count(persona.tipo_documento_persona) as totalBusqueda, persona.num_doc_persona, persona.nombre_persona, clientes.email_cliente, clientes.direccion_cliente, clientes.telefono_cliente, persona.foto_perfil, persona.estado FROM clientes INNER JOIN persona ON persona.email_persona = clientes.email_cliente where tipo_documento_persona like '%$busqueda%' or num_doc_persona like '%$busqueda%' or nombre_persona like '%$busqueda%'");
-    $sqlcuentaBusqueda->execute();
-    $arregloBusqueda = $sqlcuentaBusqueda->fetch();
-    $totalBusqueda = $arregloBusqueda['totalBusqueda'];
-
-    $maximoRegistrosBusqueda = 5;
-    if (empty($_GET['pagina'])) {
-        $pagina = 1;
-    } else {
-        $pagina = $_GET['pagina'];
-    }
-    $desde = ($pagina - 1) * $maximoRegistrosBusqueda;
-    $totalPaginas = ceil($totalBusqueda / $maximoRegistrosBusqueda);
-
-    $query2 = $connect->conexion->prepare("SELECT persona.tipo_documento_persona, persona.num_doc_persona, persona.nombre_persona, clientes.email_cliente, clientes.direccion_cliente, clientes.telefono_cliente, persona.foto_perfil, persona.estado FROM clientes INNER JOIN persona ON persona.email_persona = clientes.email_cliente where tipo_documento_persona like '%$busqueda%' or num_doc_persona like '%$busqueda%' or nombre_persona like '%$busqueda%' limit $desde,$maximoRegistros");
-    $query2->execute();
-    $arreglo2 = $query2->fetch();
-} else {
-    // Consulta
-    $query2 = $connect->conexion->prepare("SELECT persona.tipo_documento_persona, persona.num_doc_persona, persona.nombre_persona, clientes.email_cliente, clientes.direccion_cliente, clientes.telefono_cliente, persona.foto_perfil, persona.estado FROM clientes INNER JOIN persona WHERE persona.email_persona = clientes.email_cliente  and estado != 0 limit $desde,$maximoRegistros");
-    $query2->execute();
-    $arreglo2 = $query2->fetch();
-}
+// Consulta
+$query2 = $connect->conexion->prepare(
+    "SELECT persona.tipo_documento_persona, 
+    persona.num_doc_persona, 
+    persona.nombre_persona, 
+    clientes.email_cliente, 
+    clientes.direccion_cliente, 
+    clientes.telefono_cliente, 
+    persona.foto_perfil, 
+    persona.estado 
+    FROM clientes 
+    INNER JOIN persona WHERE persona.email_persona = clientes.email_cliente"
+);
+$query2->execute();
+$arreglo2 = $query2->fetch(PDO::FETCH_ASSOC);
 
 ?>
-
 <?php require "view/layouts/headerA.php" ?>
-
-<div class="container mt-5">
-        <div class="row">
-            <div class="col-6">
-                <div class="input-group d-flex" style="max-width: 400px;">
-                    <!-- Búsqueda -->
-                    <form action="<?php echo urlsite ?>?page=admin&opcion=listaCompradores" class="d-flex" role="search" method="POST">
-                        <input type="search" id="buscar" class="form-control me-2" name="busqueda" placeholder="Buscar Usuario" aria-label="Search" />
-                        <button type="submit" name="search" role="button" class="btn btn-outline-primary" value="Buscar"><i class="fas fa-search"></i></button>
-                    </form>
-                    <a href="<?php echo urlsite ?>?page=admin&opcion=listaCompradores" class="btn btn-outline-warning ms-2">
-                        <i class="fa-solid fa-list"></i>
-                        Listar
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container mt-4">
-        <div class="row justify-content-center align-self-center ">
-            <div class="card">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                <tr>
-                                    <td colspan="6" class="p-3 mb-2">
-                                        <h5>Lista de Clientes</h5>
-                                    </td>
-                                </tr>
-
-                                </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="table-secondary">
-                                    <!-- Títulos de las columnas -->
-                                    <td scope="col">Tipo Documento</td>
-                                    <td scope="col">Número Documento</td>
-                                    <td scope="col">Nombre</td>
-                                    <td scope="col">Correo electrónico</td>
-                                    <td scope="col">Dirección</td>
-                                    <td scope="col">Teléfono</td>
-                                    <td scope="col">Foto de perfil</td>
-                                    <td scope="col">Estado</td>
-                                    <td scope="col">Eliminar</td>
-                                </tr>
-                                <?php
-                                if ($arreglo2 == 0) {
-                                ?>
-                                    <div class="alert alert-success" role="alert">
-                                        <?php echo "No hay registros" ?>
-                                    </div>
-                                    <?php
-                                } else {
-                                    do {
-                                        // Estado
-                                        $stauts = '';
-                                        if ($arreglo2[7] == 0) {
-                                            $status = 'Inactivo';
-                                        } else if ($arreglo2[7] == 2) {
-                                            $status = 'En Oferta';
-                                        } else {
-                                            $status = 'Activo';
-                                        }
-                                    ?>
-                                        <tr>
-                                            <td><?php echo $arreglo2[0] ?></td>
-                                            <td><?php echo $arreglo2[1] ?></td>
-                                            <td><?php echo $arreglo2[2] ?></td>
-                                            <td><?php echo $arreglo2[3] ?></td>
-                                            <td><?php echo $arreglo2[4] ?></td>
-                                            <td><?php echo $arreglo2[5] ?></td>
-                                            <td><img src="<?php echo $arreglo2[6] ?>" alt="" width="80px"></td>
-                                            <td><?php echo $status ?></td>
-                                            <!-- Activar / Desactivar Usuario -->
-                                            <?php if ($status == 'Activo') { ?>
-                                                <td><?php echo "<form id='toggleAdmin' action='" . urlsite . "?page=toggleAdmin' name='toggleAdmin' method='POST'>
-                                                <input type='hidden' id='email_admin' name='email_admin' value='$arreglo2[3]' />
-                                                <button type='submit' name='toggle' class='btn btn-warning' onClick='alertaAdminDesactivar()' ><i class='fa-solid fa-circle-xmark'></i></button>
-                                            </form>" ?></td>
-                                            <?php } else if ($status == 'Inactivo') { ?>
-                                                <td><?php echo "<form id='toggleAdmin' action='" . urlsite . "?page=toggleAdmin' name='toggleAdmin' method='POST'>
-                                                <input type='hidden' id='email_admin' name='email_admin' value='$arreglo2[3]' />
-                                                <button type='submit' name='toggle' class='btn btn-success' onClick='alertaAdminActivar()' ><i class='fa-solid fa-eye'></i></button>
-                                            </form>" ?></td>
-                                            <?php } ?>
-                                        </tr>
-                                <?php
-                                    } while ($arreglo2 = $query2->fetch());
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+<div class="container-fluid my-4">
+    <div class="row d-flex justify-content-center">
+        <div class="rounded col-sm-11 col-md-11 col-lg-11 col-xl-11 bg-white">
+            <div class="my-2">
+                <h3 class="text-center my-3">Lista de Compradores</h3>
+                <!-- Botones -->
+                <div class="row d-flex justify-content-start">
+                    <!-- Regresar -->
+                    <div class="col" style="max-width: 140px;">
+                        <a onclick="window.history.back();" class="btn btn-dark my-2">
+                            <i class="fa-solid fa-arrow-left me-2"></i>
+                            Regresar
+                        </a>
+                    </div>
+                    <!-- Listar -->
+                    <div class="col" style="max-width: 120px;">
+                        <a href="" class="btn btn-secondary my-2">
+                            <i class="fa-solid fa-list me-2"></i>
+                            Listar
+                        </a>
                     </div>
                 </div>
-                <nav class="" aria-label="paginador">
-                    <ul class="pagination justify-content-center">
-                        <?php
-                        if ($pagina != 1) {
-                        ?>
-                            <li class="page-item ">
-                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo 1; ?>">
-                                    <i class="fa-solid fa-backward-fast"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $pagina - 1; ?>">
-                                    <i class="fa-solid fa-backward-step"></i>
-                                </a>
-                            </li>
-                        <?php
+            </div>
+            <div class="table-responsive px-2 mb-4">
+                <table class="table-sm table-hover align-middle" id="myTable">
+                    <thead class="table-secondary">
+                    <!-- t_doc, num_doc, nombre, email, direccion, telefono, foto, estado, activar/desactivar -->
+                        <tr>
+                            <th>Tipo Documento</th>
+                            <th>Número Documento</th>
+                            <th>Nombre Completo</th>
+                            <th>Correo Electrónico</th>
+                            <th>Dirección</th>
+                            <th>Teléfono</th>
+                            <th class="no-exportar">Foto de Perfil</th>
+                            <th>Estado</th>
+                            <th class="no-exportar">Activar/Desactivar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($arreglo2 === false) { ?>
+                            <div class="alert alert-info" role="alert">
+                                <?php echo "No hay registros" ?>
+                            </div>
+                            <?php } else {
+                            do {
+                                // Estado
+                                $stauts = '';
+                                if ($arreglo2['estado'] == 0) {
+                                    $clase = 'text-center py-auto my-1 p-2 rounded bg-danger text-light fw-semibold';
+                                    $status = 'Inactivo';
+                                } else if ($arreglo2['estado'] == 1) {
+                                    $status = 'Activo';
+                                    $clase = 'text-center py-auto my-1 p-2 rounded bg-success text-light fw-semibold';
+                                }
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $arreglo2['tipo_documento_persona'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['num_doc_persona'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['nombre_persona'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['email_cliente'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['direccion_cliente'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['telefono_cliente'] ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if ($arreglo2['foto_perfil'] === "config/img/persona/") { ?>
+                                            <img src="<?php echo urlsite ?>/config/img/persona/foto_gen.png" alt="Foto" width="75" height="75">
+                                        <?php } else { ?>
+                                            <img src="<?php echo $arreglo2['foto_perfil'] ?>" alt="Foto" class="rounded-circle" width="75" height="75">
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <span class="<?php echo $clase ?>">
+                                            <?php echo $status ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php if ($arreglo2['email_cliente'] == $user) { ?>
+                                            <!-- Nada -->
+                                        <?php } else { ?>
+                                            <?php if ($status == 'Activo') {
+                                                echo '
+                                                <button onclick="confirmarDesactivarComprador(`' . $arreglo2['email_cliente'] . '`)" class="btn btn-outline-danger">
+                                                    <i class="fa-regular fa-circle-xmark"></i>
+                                                </button>
+                                                ';
+                                            } elseif ($status == "Inactivo") {
+                                                echo '
+                                                <button onclick="confirmarActivarComprador(`' . $arreglo2['email_cliente'] . '`)" class="btn btn-outline-success">
+                                                    <i class="fa-regular fa-circle-check"></i>
+                                                </button>
+                                                ';
+                                            }
+                                            ?>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                        <?php } while ($arreglo2 = $query2->fetch(PDO::FETCH_ASSOC));
                         }
-                        for ($i = 1; $i <= $totalPaginas; $i++) {
-                            if ($i == $pagina) {
-                                echo '<li class="page-item active" aria-current="page"><a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=' . $i . '">' . $i . '</a></li>';
-                            } else {
-                                echo '<li class="page-item "><a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=' . $i . '">' . $i . '</a></li>';
-                            }
-                        }
-                        if ($pagina != $totalPaginas) {
                         ?>
-
-                            <li class="page-item">
-                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $pagina + 1; ?>">
-                                    <i class="fa-solid fa-forward-step"></i>
-                                </a>
-                            </li>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=admin&opcion=listaTiendas&pagina=<?php echo $totalPaginas; ?>">
-                                    <i class="fa-solid fa-forward-fast"></i>
-                                </a>
-                            </li>
-                        <?php
-                        }
-                        ?>
-                    </ul>
-                </nav>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-
+</div>
 <?php require "view/layouts/footer.php" ?>

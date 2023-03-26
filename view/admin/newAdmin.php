@@ -1,6 +1,17 @@
 <?php
-
 session_start();
+// Capturo el correo para futuras consultas
+$_SESSION['inicio'] = time();
+$sestime = 30000;
+if (isset($_SESSION['inicio']) && time() - $_SESSION['inicio'] > $sestime ) {
+    header('Location: ?page=logout');
+}
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header("Location: ?page=logout");
+}
 
 ?>
 
@@ -14,6 +25,23 @@ session_start();
                     <h3 class="text-center">
                         Registrar Administrador
                     </h3>
+                    <?php
+                    if (isset($_SESSION['msj']) and isset($_SESSION['icon'])) {
+                        $respuesta = $_SESSION['msj'];
+                        $icono = $_SESSION['icon'];
+                    ?>
+                        <script>
+                            Swal.fire(
+                                'Registro Administrador',
+                                '<?php echo $respuesta ?>',
+                                '<?php echo $icono ?>'
+                            )
+                        </script>
+                    <?php
+                        unset($_SESSION['msj']);
+                        unset($_SESSION['icon']);
+                    }
+                    ?>
                     <p class="text-center">
                         Ingrese los datos solicitados para registrar a un nuevo administrador, recuerde que los campos
                         marcados con <span style="color: red;">(*)</span> son obligatorios y el número de documento va
@@ -21,7 +49,7 @@ session_start();
                     </p>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="<?php echo urlsite?>?page=registrarA" enctype="multipart/form-data">
+                    <form method="POST" action="<?php echo urlsite?>?page=registrarA" enctype="multipart/form-data" id="newAdmin">
                         <!-- Tipo y Número de Documento -->
                         <div class="row mb-4">
                             <div class="col">
@@ -38,7 +66,7 @@ session_start();
                             </div>
                             <div class="col">
                                 <div class="form-outline">
-                                    <input type="number" id="documento_admin" class="form-control" name="documento_admin" />
+                                    <input required type="number" id="documento_admin" class="form-control" name="documento_admin" />
                                     <label class="form-label" for="documento_admin">Número de documento<span style="color: red;">(*)</span></label>
                                 </div>
                             </div>
@@ -46,17 +74,17 @@ session_start();
 
                         <!-- Nombre -->
                         <div class="form-outline mb-4">
-                            <input type="text" id="nombre_admin" class="form-control" name="nombre_admin" />
+                            <input required type="text" id="nombre_admin" class="form-control" name="nombre_admin" />
                             <label class="form-label" for="nombre_admin">Nombre Completo<span style="color: red;">(*)</span></label>
                         </div>
 
                         <!-- Correo -->
                         <div class="form-outline mb-4">
-                            <input type="email" id="correo_admin" class="form-control" name="correo_admin" />
+                            <input required type="email" id="correo_admin" class="form-control" name="correo_admin" />
                             <label class="form-label" for="correo_admin">Correo Electrónico<span style="color: red;">(*)</span></label>
                         </div>
                         <div class="form-outline mb-4">
-                            <input type="email" id="correo2_admin" class="form-control" name="correo2_admin" />
+                            <input required type="email" id="correo2_admin" class="form-control" name="correo2_admin" />
                             <label class="form-label" for="correo2_admin">Vuelva a ingresar el Correo Electrónico<span style="color: red;">(*)</span></label>
                         </div>
 
@@ -64,15 +92,18 @@ session_start();
                         <div class="row mb-4">
                             <div class="col">
                                 <div class="form-outline">
-                                    <input type="password" id="pass_admin" class="form-control" name="pass_admin" />
+                                    <input required type="password" minlength="8" maxlength="20" id="pass_admin" class="form-control" name="pass_admin" />
                                     <label class="form-label" for="pass_admin">Contraseña<span style="color: red;">(*)</span></label>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-outline">
-                                    <input type="password" id="pass2_admin" class="form-control" name="pass2_admin" />
+                                    <input required type="password" minlength="8" maxlength="20" id="pass2_admin" class="form-control" name="pass2_admin" />
                                     <label class="form-label" for="pass2_admin">Vuelva a ingresar la Contraseña<span style="color: red;">(*)</span></label>
                                 </div>
+                            </div>
+                            <div id="passwordHelpBlock" class="form-text">
+                                La contraseña debe tener entre 8 y 20 caracteres.
                             </div>
                         </div>
 
@@ -85,7 +116,7 @@ session_start();
                         <!-- Enviar -->
                         <div class="col mx-auto" style="max-width: 90px;">
                             <input type="hidden" name="añadir" id="añadir">
-                            <input type="submit" class="btn btn-outline-primary btn-block mb-4" value="Registrar" />
+                            <input type="submit" onclick="alertaAñadirAdmin()" class="btn btn-outline-primary btn-block mb-4" value="Registrar" />
                         </div>
                     </form>
                 </div>

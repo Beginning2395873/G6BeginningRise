@@ -1,310 +1,522 @@
-// Funciones Tienda
-function alertaTiendaDesactivar() {
-    const form = document.getElementById("desactivarTienda")
+// Cerrar Sesión
+function alertaCerrarSesion() {
+    Swal.fire({
+        title: '¿Desea Cerrar Sesión?',
+        text: "",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Sí',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location = "?page=logout"
+        }
+    })
+}
+// Cerrar Sesión
+
+// Admin
+function alertaAñadirAdmin() {
+    const form = document.getElementById("newAdmin");
     form.addEventListener("submit", function (e) {
         e.preventDefault();
-        tiendaAlertaDesactivar();
-    })
-
+        Swal.fire({
+            title: '¿Completar Registro?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
 }
 
-function tiendaAlertaDesactivar() {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success ms-2',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
+function alertaModificarAdmin() {
+    const form = document.getElementById("editarAdmin");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Actualizar Datos?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
+}
 
-    swalWithBootstrapButtons.fire({
-        title: '¿Desea desactivar la tienda?',
+function confirmarDesactivarAdmin(id) {
+    Swal.fire({
+        title: '¿Desea desactivar al Administrador?',
         text: "",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No',
-        reverseButtons: true
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            eliminarTienda();            
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La tienda no fue desactivada',
-                'error'
-            )
+            let listData = {
+                email_admin: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=admin&opcion=toggleAdmin',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
         }
     })
 }
 
-function alertaTiendaActivar() {
-    const form = document.getElementById("desactivarTienda")
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        tiendaAlertaActivar();
-    })
-
-}
-
-function tiendaAlertaActivar() {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success ms-2',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
-
-    swalWithBootstrapButtons.fire({
-        title: '¿Desea Activar la tienda?',
+function confirmarActivarAdmin(id) {
+    Swal.fire({
+        title: '¿Desea Activar al Administrador?',
         text: "",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No',
-        reverseButtons: true
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            eliminarTienda();            
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'La tienda no fué activada',
-                'error'
-            )
+            let listData = {
+                email_admin: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=admin&opcion=toggleAdmin',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
         }
     })
 }
 
-function eliminarTienda() {
-
-    document.getElementById('desactivarTienda').submit()
-    
-}
-// Funciones Tienda
-
-
-// Funciones Admin
-
-function alertaAdminDesactivar() {
-    const form = document.getElementById("toggleAdmin")
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        adminAlertaDesactivar();
-    })
-
-}
-
-function adminAlertaDesactivar() {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success ms-2',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
-
-    swalWithBootstrapButtons.fire({
-        title: '¿Desea desactivar al Usuario?',
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            toggleAdmin();            
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'El Usuario no fue desactivado',
-                'error'
-            )
-        }
-    })
-}
-
-function alertaAdminActivar() {
-    const form = document.getElementById("toggleAdmin")
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        adminAlertaActivar();
-    })
-
-}
-
-function adminAlertaActivar() {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success ms-2',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
-
-    swalWithBootstrapButtons.fire({
-        title: '¿Desea Activar al Usuario?',
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            toggleAdmin();            
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'El Usuario no fue activado',
-                'error'
-            )
-        }
-    })
-}
-
-function toggleAdmin() {
-
-    document.getElementById('toggleAdmin').submit()
-    
-}
-
-
-function alertaAdminEliminar() {
-    const form = document.getElementById("borrarAdmin")
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        adminAlertaEliminar();
-    })
-
-}
-
-function adminAlertaEliminar() {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success ms-2',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
-
-    swalWithBootstrapButtons.fire({
+function confirmarEliminarAdmin(id) {
+    Swal.fire({
         title: '¿Desea Eliminar al Administrador?',
+        text: "Esta acción NO se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let listData = {
+                correo_admin: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=admin&opcion=borrarAdmin',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
+        }
+    })
+}
+// Fin Admin
+
+// Tienda
+function alertaAñadirTienda() {
+    const form = document.getElementById("newTienda");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Completar Registro?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
+}
+
+function alertaModificarTienda() {
+    const form = document.getElementById("editarTienda");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Actualizar Datos?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
+}
+
+function confirmarDesactivarTienda(id) {
+    Swal.fire({
+        title: '¿Desea Desactivar la Empresa?',
         text: "",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Sí',
-        cancelButtonText: 'No',
-        reverseButtons: true
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            eliminarAdmin();            
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelado',
-                'El Administrador no fue eliminado',
-                'error'
-            )
+            let listData = {
+                nit: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=toggleTienda',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
         }
     })
 }
 
-function eliminarAdmin() {
-
-    document.getElementById('borrarAdmin').submit()
-    
+function confirmarActivarTienda(id) {
+    Swal.fire({
+        title: '¿Desea Activar la Empresa?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let listData = {
+                nit: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=toggleTienda',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
+        }
+    })
 }
-// Funciones Admin
+// Fin Tienda
 
+// Comprador
 
-// Funciones Productos
-function alertaProductoDesactivar(){
-    const form = document.getElementById('toggleProducto')
-    form.addEventListener("submit", function (a) {
-        a.preventDefault();
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success ms-2',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
-    
-        swalWithBootstrapButtons.fire({
-            title: '¿Desea desactivar el Producto?',
+function alertaAñadirComprador() {
+    const form = document.getElementById("newComprador");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Completar Registro?',
             text: "",
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonText: 'Sí',
-            cancelButtonText: 'No',
-            reverseButtons: true
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                document.getElementById('toggleProducto').submit()
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelado',
-                    'El Producto no fue desactivado',
-                    'error'
-                )
+                form.submit();
             }
         })
+    });
+}
+
+function alertaModificarComprador() {
+    const form = document.getElementById("editarComprador");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Actualizar Datos?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
+}
+
+function confirmarDesactivarComprador(id) {
+    Swal.fire({
+        title: '¿Desea Desactivar al Comprador?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let listData = {
+                email: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=toggleComprador',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
+        }
     })
 }
 
-function alertaProductoActivar(){
-    const form = document.getElementById('toggleProducto')
-    form.addEventListener("submit", function (a) {
-        a.preventDefault();
-        const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-                confirmButton: 'btn btn-success ms-2',
-                cancelButton: 'btn btn-danger'
-            },
-            buttonsStyling: false
-        })
-    
-        swalWithBootstrapButtons.fire({
-            title: '¿Desea Activar el Producto?',
-            text: "",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sí',
-            cancelButtonText: 'No',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('toggleProducto').submit()
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelado',
-                    'El Producto no fue Activado',
-                    'error'
-                )
+function confirmarActivarComprador(id) {
+    Swal.fire({
+        title: '¿Desea Activar al Comprador?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let listData = {
+                email: id
             }
-        })
+            $.ajax({
+                type: 'POST',
+                url: '?page=toggleComprador',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
+        }
     })
 }
+// Fin Comprador
+
+
+// Producto
+function alertaAñadirProducto() {
+    const form = document.getElementById("newProducto");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Completar Registro?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
+}
+
+function alertaModificarProducto() {
+    const form = document.getElementById("editarProducto");
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        Swal.fire({
+            title: '¿Actualizar Datos?',
+            text: "",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        })
+    });
+}
+
+function confirmarDesactivarProducto(nit, idProducto) {
+    Swal.fire({
+        title: '¿Desea Desactivar el Producto?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let listData = {
+                nit: nit,
+                idProducto: idProducto
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=toggleProducto',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
+        }
+    })
+}
+
+function confirmarActivarProducto(nit, id) {
+    Swal.fire({
+        title: '¿Desea Activar el Producto?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let listData = {
+                nit: nit,
+                idProducto: id
+            }
+            $.ajax({
+                type: 'POST',
+                url: '?page=toggleProducto',
+                data: listData,
+                success: function (data) {
+                    swal.fire({
+                        position: 'center',
+                        icon: 'info',
+                        title: data,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2500);
+                }
+            });
+        }
+    })
+}
+// Fin Producto

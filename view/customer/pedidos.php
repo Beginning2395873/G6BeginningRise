@@ -1,0 +1,161 @@
+<?php
+session_start();
+// Capturo el correo para futuras consultas
+$_SESSION['inicio'] = time();
+$sestime = 30000;
+if (isset($_SESSION['inicio']) && time() - $_SESSION['inicio'] > $sestime ) {
+    header('Location: ?page=logout');
+}
+
+if (isset($_SESSION['login'])) {
+    $user = $_SESSION['login'];
+} else {
+    header("Location: ?page=logout");
+}
+
+// Conexión y consulta para total de registros
+$connect = new Conexion();
+$connect->conectar();
+// Consulta
+$query2 = $connect->conexion->prepare(
+    // id, cliente, email cliente, tienda, marca, nombre producto, precio, fecha
+    "SELECT ventas.id_venta,
+    persona.nombre_persona,
+    ventas.email_cliente,
+    ventas_productos.nit_tienda,
+    tiendas.nombre_tienda,
+    tiendas.email_tienda,
+    tiendas.telefono_tienda,
+    marcas.marca,
+    productos.id_producto,
+    productos.nombre_producto,
+    tiendas_productos.precio,
+    tiendas_productos.descuento,
+    ventas_productos.cantidad,
+    ventas.fecha
+    FROM ventas
+    INNER JOIN persona ON ventas.email_cliente = persona.email_persona
+    INNER JOIN ventas_productos ON ventas.id_venta = ventas_productos.id_venta
+    INNER JOIN tiendas ON ventas_productos.nit_tienda = tiendas.nit_tienda
+    INNER JOIN tiendas_productos ON ventas_productos.nit_tienda = tiendas_productos.nit_tienda 
+    AND ventas_productos.id_producto = tiendas_productos.id_producto
+    INNER JOIN productos ON ventas_productos.id_producto = productos.id_producto
+    INNER JOIN marcas ON productos.id_marca = marcas.id_marca
+    WHERE ventas.email_cliente = '$user'"
+);
+// id, nombre persona, correo cliente, nit tienda, nombre tienda, correo tienda, marca, nombre producto, precio, descuento, fecha
+$query2->execute();
+$arreglo2 = $query2->fetch(PDO::FETCH_ASSOC);
+?>
+<?php require "view/layouts/headerC.php" ?>
+
+<div class="container-fluid my-4">
+    <div class="row d-flex justify-content-center">
+        <div class="rounded col-sm-11 col-md-11 col-lg-11 col-xl-11 bg-white">
+            <div class="my-2">
+                <h3 class="text-center fs-2 my-3">
+                <i class="fa-solid fa-truck-fast me-2"></i>Pedidos</h3>
+                <!-- Botones -->
+                <div class="row d-flex justify-content-start">
+                    <!-- Regresar -->
+                    <div class="col" style="max-width: 140px;">
+                        <a onclick="window.history.back();" class="btn btn-dark my-2">
+                            <i class="fa-solid fa-arrow-left me-2"></i>
+                            Regresar
+                        </a>
+                    </div>
+                    <!-- Listar -->
+                    <div class="col" style="max-width: 120px;">
+                        <a href="" class="btn btn-secondary my-2">
+                            <i class="fa-solid fa-list me-2"></i>
+                            Listar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive px-2 mb-4">
+                <table class="table table-hover align-middle" id="myTable">
+                    <thead class="table-secondary">
+                    <!-- id, nombre persona, correo cliente, nit tienda, nombre tienda, correo tienda, marca, nombre producto, precio, descuento, fecha -->
+                        <tr>
+                            <th>ID_Venta</th>
+                            <th>NIT Empresa</th>
+                            <th>Nombre Empresa</th>
+                            <th>Correo Empresa</th>
+                            <th>Marca</th>
+                            <th>Referencia</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Descuento</th>
+                            <th>Fecha</th>
+                            <th class="no-exportar">Consultar Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($arreglo2 === false) { ?>
+                            <div class="alert alert-info" role="alert">
+                                <?php echo "No hay registros" ?>
+                            </div>
+                            <?php } else {
+                            do {
+                                // Descuento
+                                $price = $arreglo2['precio'];
+                                $discount = $arreglo2['descuento'];
+                                if ($discount != 0) {
+                                    $oferta = $price - ceil(($price * $discount / 100));
+                                    $class = "text-success fw-semibold";
+                                } else {
+                                    $oferta = $price;
+                                    $class = "text-dark fw-semibold";
+                                }
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?php echo $arreglo2['id_venta'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['nit_tienda'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['nombre_tienda'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['email_tienda'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['marca'] ?>
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['nombre_producto'] ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo $arreglo2['cantidad'] ?>
+                                    </td>
+                                    <td>
+                                        <span class="<?php echo $class ?>">
+                                            $<?php echo number_format($oferta) ?>
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php echo $discount ?>%
+                                    </td>
+                                    <td>
+                                        <?php echo $arreglo2['fecha'] ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <a target="_blank" href="https://api.whatsapp.com/send?phone=+57<?php echo $arreglo2['telefono_tienda']?>&text=Estado de mi pedido Nº <?php echo $arreglo2['id_venta']?>" class="btn text-light" style="background-color: #25d366;">
+                                            <i class="fa-brands fa-whatsapp fa-xl"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                        <?php } while ($arreglo2 = $query2->fetch(PDO::FETCH_ASSOC));
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php require "view/layouts/footer.php" ?>

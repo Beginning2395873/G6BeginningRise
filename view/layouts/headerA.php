@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,14 +12,28 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <!-- CSS only -->
     <link rel="stylesheet" href="<?php echo urlsite ?>/config/css/bootstrap.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?php echo urlsite ?>/config/css/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Cositas -->
     <link rel="stylesheet" href="<?php echo urlsite ?>/config/css/cositas.css">
+    <!-- JQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- DataTable -->
+    <link href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.css">
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.js"></script>
+    <link href="https://cdn.datatables.net/1.13.3/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/buttons/2.3.5/css/buttons.bootstrap5.min.css" rel="stylesheet" />
     <title>Administrador - Beginning Rise</title>
 </head>
 
 <body>
+    <div class="spinner-container">
+        <span class="loader"></span>
+    </div>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid" style="max-width: 240px;">
+            <div class="container-fluid" style="max-width: 240px;">
                 <div class="row">
                     <div class="col">
                         <a class="navbar-brand" href="<?php echo urlsite ?>?page=admin">
@@ -34,7 +49,7 @@
                 </div>
             </div>
             <div class="container-fluid" style="max-width: 260px;">
-                <div class="row">
+                <div class="row mx-auto" style="max-width: 140px;">
                     <div class="col">
                         <div class="dropdown">
                             <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -49,11 +64,11 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item text-danger" href="<?php echo urlsite ?>?page=logout">
-                                    <i class="fa-solid fa-right-from-bracket me-2"></i>
-                                    Cerrar Sesión
-                                </a>
-                            </li>
+                                    <a class="dropdown-item text-danger" id="logout" onclick="event.preventDefault(); alertaCerrarSesion()" href="?page=logout">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i>
+                                        Cerrar Sesión
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
