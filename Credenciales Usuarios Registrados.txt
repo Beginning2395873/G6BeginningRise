@@ -1,0 +1,75 @@
+Tienda
+
+nit - 9463154887
+Tienda - Vampix - INACTIVO
+direccion - Calle 80 #16-84
+tel - 3011485697
+Correo - vampix@vampix.com
+Pass - Vampix03
+
+nit - 9885365489
+Tienda - Drako Tecnología SAS
+direccion - Diagonal 39 #3-33
+tel - 3142301739
+Correo - drakotech@drak.com
+pass - drakitouwu
+
+nit - 9011016026
+Tienda - CyP SAS
+direccion - Carrera 64 #28 - 28
+tel - 3142301739
+Correo - cyperi@outlook.com
+pass - cyp2664
+
+nit - 9009554091
+Tienda - Andromeda PC
+direccion - Transversal 71 #116 - 40
+tel - 3241576804
+Correo - pcandromeda88@gmail.com
+pass - compu
+
+Admin
+
+Tipo - C.C.
+Número - 79325649
+Nombre - Alan Britto
+Correo - alanbritto@gmail.com
+Pass - alan123
+
+Cliente
+
+Tipo - C.E.
+Número - 65125694
+Nombre - Juan Benitez
+Correo - bodoquejuan@outlook.com
+Dirección - Calle 26 Sur #25-49
+Teléfono - 3066132694
+Pass - 31Minutos
+
+
+Para PayPal
+User - sb-2obiu25249818@personal.example.com
+Pass - o*'7I+b^
+
+
+
+CREAR Tienda
+
+nit - 8563216547
+Tienda - TechTomillo
+direccion - Carrera 84 #18 - 18
+tel - 3042712565
+Correo - bmmotta0@hotmail.com
+pass - tom321
+
+
+Pruebas Pass Recover
+
+
+Administrador
+bmmotta0@hotmail.com
+
+
+Hotmail beginningrise
+beginningrise@outlook.com
+beginning65
